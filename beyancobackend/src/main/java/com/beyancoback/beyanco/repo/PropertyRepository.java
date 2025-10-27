@@ -16,4 +16,6 @@ public interface PropertyRepository extends JpaRepository<Property, Long> {
 
     // Find one property by id and userId
     Optional<Property> findByIdAndUserId(Long id, Long userId);
+    
+    List<Property> findByChatHistoryId(Long chatHistoryId);
 }

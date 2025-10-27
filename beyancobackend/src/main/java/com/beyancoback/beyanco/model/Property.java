@@ -79,4 +79,12 @@ public class Property {
 
     public User getUser() { return user; }
     public void setUser(User user) { this.user = user; }
+    
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "chat_history_id")
+    @com.fasterxml.jackson.annotation.JsonIgnoreProperties({"user", "hibernateLazyInitializer", "handler"})
+    private ChatHistory chatHistory;
+    
+    public ChatHistory getChatHistory() { return chatHistory; }
+    public void setChatHistory(ChatHistory chatHistory) { this.chatHistory = chatHistory; }
 }

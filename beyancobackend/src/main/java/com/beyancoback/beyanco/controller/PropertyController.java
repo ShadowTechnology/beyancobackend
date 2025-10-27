@@ -49,6 +49,28 @@ public class PropertyController {
         return ResponseEntity.ok(property);
     }
 
+//    @PostMapping("/upload")
+//    public ResponseEntity<Property> uploadProperty(
+//            @RequestParam("title") String title,
+//            @RequestParam("description") String description,
+//            @RequestParam("propertyType") String propertyType,
+//            @RequestParam(value = "enhancementType", required = false) String enhancementType,
+//            @RequestParam(value = "enhancementStyle", required = false) String enhancementStyle,
+//            @RequestParam("file") MultipartFile file,
+//            @AuthenticationPrincipal UserDetailsImpl userDetails) {
+//
+//        Property property = propertyService.uploadProperty(
+//                userDetails.getId(),
+//                title,
+//                description,
+//                propertyType,
+//                enhancementType,
+//                enhancementStyle,
+//                file
+//        );
+//        return ResponseEntity.ok(property);
+//    }
+    
     @PostMapping("/upload")
     public ResponseEntity<Property> uploadProperty(
             @RequestParam("title") String title,
@@ -57,6 +79,7 @@ public class PropertyController {
             @RequestParam(value = "enhancementType", required = false) String enhancementType,
             @RequestParam(value = "enhancementStyle", required = false) String enhancementStyle,
             @RequestParam("file") MultipartFile file,
+            @RequestParam(value = "chatHistoryId", required = false) Long chatHistoryId, // ✅ NEW
             @AuthenticationPrincipal UserDetailsImpl userDetails) {
 
         Property property = propertyService.uploadProperty(
@@ -66,10 +89,12 @@ public class PropertyController {
                 propertyType,
                 enhancementType,
                 enhancementStyle,
-                file
+                file,
+                chatHistoryId // ✅ NEW
         );
         return ResponseEntity.ok(property);
     }
+
 
     @PostMapping("/{id}/enhance")
     public ResponseEntity<Property> enhanceProperty(
@@ -86,4 +111,11 @@ public class PropertyController {
         propertyService.deleteProperty(id, userDetails.getId());
         return ResponseEntity.ok(new MessageResponse("Property deleted successfully"));
     }
+    
+    @GetMapping("/byChat/{chatId}")
+    public ResponseEntity<List<Property>> getPropertiesByChat(@PathVariable Long chatId) {
+        List<Property> list = propertyService.getPropertiesByChatId(chatId);
+        return ResponseEntity.ok(list);
+    }
+
 }
